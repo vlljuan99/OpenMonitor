@@ -1,0 +1,56 @@
+version: '3'
+services:
+  postgres_django:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: openmonitor
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data_django:/var/lib/postgresql/data
+    networks:
+      - openmonitor_network
+
+  django:
+    build:
+      context: ./OpenMonitor/django_app  # Refleja la estructura correcta
+      dockerfile: Dockerfile  # Asegúrate de que el Dockerfile esté correctamente nombrado y en esta carpeta
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./OpenMonitor/django_app:/app  # Asegúrate de mapear correctamente la carpeta django_app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres_django
+    networks:
+      - openmonitor_network
+
+  vue:
+    build:
+      context: ./OpenMonitor/vue_frontend
+      dockerfile: Dockerfile  # Asegúrate de que el Dockerfile de Vue.js esté en la carpeta vue_frontend
+    command: npm run serve
+    volumes:
+      - ./OpenMonitor/vue_frontend:/app  # Monta la carpeta vue_frontend correctamente
+    ports:
+      - "8080:8080"
+    networks:
+      - openmonitor_network
+
+  nginx:
+    build:
+      context: ./OpenMonitor/nginx  # Cambia el contexto a la carpeta donde está Dockerfile.nginx
+      dockerfile: Dockerfile.nginx  # Asegúrate de que este archivo exista en ./nginx
+    ports:
+      - "8081:80"
+    depends_on:
+      - django
+      - vue
+    networks:
+      - openmonitor_network
+
+volumes:
+  postgres_data_django:
+
+networks:
+  openmonitor_network:
