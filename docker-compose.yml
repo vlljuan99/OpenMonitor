@@ -12,6 +12,8 @@ services:
       - openmonitor_network
 
   django:
+    env_file:
+      - .env
     build:
       context: ./OpenMonitor/django_app  # Refleja la estructura correcta
       dockerfile: Dockerfile  # Asegúrate de que el Dockerfile esté correctamente nombrado y en esta carpeta
@@ -39,15 +41,20 @@ services:
 
   nginx:
     build:
-      context: ./OpenMonitor/nginx  # Cambia el contexto a la carpeta donde está Dockerfile.nginx
-      dockerfile: Dockerfile.nginx  # Asegúrate de que este archivo exista en ./nginx
+      context: ./OpenMonitor/nginx
+      dockerfile: Dockerfile.nginx
     ports:
-      - "8081:80"
+      - "8443:443"
+    volumes:
+      - /home/webugr/openssl/ofiwebsubdir:/etc/ssl/certs
     depends_on:
       - django
       - vue
     networks:
       - openmonitor_network
+
+
+
 
 volumes:
   postgres_data_django:

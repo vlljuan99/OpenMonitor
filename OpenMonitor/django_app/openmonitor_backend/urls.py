@@ -1,21 +1,15 @@
-"""openmonitor_backend URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/3.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/users/', views.user_list, name='user_list'),
+    path('api/projects/<int:project_id>', views.project_detail, name='project_detail'),
+    path('api/users/<int:user_id>', views.user_statistics_view, name='user_statistics_view'),
+    path('api/projects/', views.projects_view, name='projects'),
+    path('api/projects/<int:project_id>/work_packages/', views.project_work_packages_view, name='project_work_packages'),
+    path('api/projects/<int:project_id>/statistics/', views.project_statistics_view, name='project_statistics'),
+    path('api/users/<int:user_id>/work_packages/', views.user_work_packages_view, name='user_work_packages'),
 ]
+
