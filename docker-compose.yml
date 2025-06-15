@@ -30,12 +30,12 @@ services:
   vue:
     build:
       context: ./OpenMonitor/vue_frontend
-      dockerfile: Dockerfile  # Asegúrate de que el Dockerfile de Vue.js esté en la carpeta vue_frontend
-    command: npm run serve
+      dockerfile: Dockerfile
     volumes:
-      - ./OpenMonitor/vue_frontend:/app  # Monta la carpeta vue_frontend correctamente
+    - ./OpenMonitor/vue_frontend/src:/app/src
+    - ./OpenMonitor/vue_frontend/package.json:/app/package.json
     ports:
-      - "8080:8080"
+      - "5174:5174"
     networks:
       - openmonitor_network
 
@@ -44,6 +44,7 @@ services:
       context: ./OpenMonitor/nginx
       dockerfile: Dockerfile.nginx
     ports:
+      - "80:80"
       - "8443:443"
     volumes:
       - /home/webugr/openssl/ofiwebsubdir:/etc/ssl/certs

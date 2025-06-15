@@ -3,5 +3,4 @@ FROM nginx:latest
 # Copiar el archivo de configuración de nginx
 COPY ./nginx.conf /etc/nginx/nginx.conf
 
-# Exponer el puerto 443 para HTTPS
-EXPOSE 443
+EXPOSE 80 443
