@@ -44,7 +44,7 @@ services:
       context: ./OpenMonitor/nginx
       dockerfile: Dockerfile.nginx
     ports:
-      - "80:80"
+      - "8080:80"
       - "8443:443"
     volumes:
       - /home/webugr/openssl/ofiwebsubdir:/etc/ssl/certs
