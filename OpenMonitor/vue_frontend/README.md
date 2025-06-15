@@ -7,8 +7,9 @@ npm install
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+npm run dev
 ```
+Use `npm run serve` to preview the production build.
 
 ### Compiles and minifies for production
 ```
