@@ -12,14 +12,17 @@ services:
       - openmonitor_network
 
   django:
-    env_file:
-      - .env
     build:
-      context: ./OpenMonitor/django_app  # Refleja la estructura correcta
-      dockerfile: Dockerfile  # Asegúrate de que el Dockerfile esté correctamente nombrado y en esta carpeta
+      context: ./OpenMonitor/django_app
+      dockerfile: Dockerfile
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./OpenMonitor/django_app:/app  # Asegúrate de mapear correctamente la carpeta django_app
+      - ./OpenMonitor/django_app:/app
+    environment:
+      POSTGRES_DB: openmonitor
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_HOST: postgres_django
     ports:
       - "8000:8000"
     depends_on:
@@ -32,8 +35,8 @@ services:
       context: ./OpenMonitor/vue_frontend
       dockerfile: Dockerfile
     volumes:
-    - ./OpenMonitor/vue_frontend/src:/app/src
-    - ./OpenMonitor/vue_frontend/package.json:/app/package.json
+      - ./OpenMonitor/vue_frontend/src:/app/src
+      - ./OpenMonitor/vue_frontend/package.json:/app/package.json
     ports:
       - "5174:5174"
     networks:
